@@ -1,5 +1,6 @@
 const cohort = process.argv[2];
 
+const values = [`%${cohort}%`];
 
 const { Pool } = require('pg');
 
@@ -20,9 +21,9 @@ JOIN students
 ON assistance_requests.student_id = students.id
 JOIN cohorts
 ON cohorts.id = students.cohort_id
-WHERE cohorts.name LIKE '%${cohort}%'
+WHERE cohorts.name LIKE $1
 ORDER BY teacher;
-`)
+`, values)
 .then(res => {
   console.log(res.rows);
 })
